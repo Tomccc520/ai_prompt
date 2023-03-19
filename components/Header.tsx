@@ -10,8 +10,19 @@ export default function Header() {
   const otherLocale = locales?.find((cur) => cur !== locale)
 
   return (
-    <header className="flex justify-between items-center w-full mt-5 border-b-2 pb-7 sm:px-4 px-2">
+    <header className="flex justify-between items-center w-full mt-5 pb-7 sm:px-4 px-2">
+
       <Link href="/" className="flex space-x-3">
+        <Image
+          alt="回退首页"
+          src="/back.svg"
+          className="sm:w-12 sm:h-12 w-8 h-8"
+          width={32}
+          height={32}
+        />
+      </Link>
+
+      {/* <Link href="/" className="flex space-x-3">
         <Image
           alt="header text"
           src="/icon.svg"
@@ -35,7 +46,7 @@ export default function Header() {
         )
       }
 
-      </div>
+      </div> */}
 
 
     </header>
