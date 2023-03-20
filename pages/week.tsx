@@ -15,7 +15,7 @@ import ResizablePanel from "../components/ResizablePanel";
 import { marked } from "marked";
 
 const Week: NextPage = () => {
-  const t = useTranslations('Index')
+  const t = useTranslations('week')
 
   const [loading, setLoading] = useState(false);
   const [chat, setChat] = useState("");

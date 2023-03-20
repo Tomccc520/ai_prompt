@@ -41,12 +41,12 @@ const CardPage: NextPage = () => {
     setGeneratedChat("");
     setLoading(true);
     if (useUserKey && api_key == ""){
-      toast.error(t("API_KEY_NULL_ERROR"))
+      toast.error("API key不能为空")
       setLoading(false)
       return
     }
     if (chat == ""){
-      toast.error(t("CONTENT_NULL_ERROR"))
+      toast.error("内容不能为空")
       setLoading(false)
       return
     }
@@ -102,7 +102,7 @@ const CardPage: NextPage = () => {
 
   return (
    
-    <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
+    <div className="flex w-full mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Nav />
       <Head>
         <title>{t('title')}</title>

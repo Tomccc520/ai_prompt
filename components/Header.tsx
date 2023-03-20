@@ -5,14 +5,13 @@ import { useTranslations } from "next-intl";
 import Github from "./GitHub";
 
 export default function Header() {
-  const t = useTranslations('Index')
   const { locale, locales, route } = useRouter()
   const otherLocale = locales?.find((cur) => cur !== locale)
 
   return (
     <header className="flex justify-between items-center w-full mt-5 pb-7 sm:px-4 px-2">
 
-      <Link href="/" className="flex space-x-3">
+      <Link href="/" className="flex space-x-3 m-5">
         <Image
           alt="回退首页"
           src="/back.svg"

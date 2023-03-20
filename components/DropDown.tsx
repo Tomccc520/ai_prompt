@@ -21,7 +21,7 @@ interface DropDownProps {
 let forms: FormType[] = ["paragraphForm", "outlineForm"]
 
 export default function DropDown({ form, setForm}: DropDownProps) {
-  const t = useTranslations('Index')
+  const t = useTranslations('week')
   return (
     <Menu as="div" className="relative block text-left w-full">
       <div>
