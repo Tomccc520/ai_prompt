@@ -12,17 +12,7 @@ function Home() {
         <Nav />
 
         <div className='container mx-auto pb-10 pt-4'>
-
-          <div className='class="flex w-full flex-col gap-y-4"'>
-            <div className="text-lg font-semibold text-black">效率工具</div>
-            {/* <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
-              <Card  index={"week"}/>
-              <Card  index={"red-book"}/>
-            </div> */}
-            <CardJson/>
-          </div>
-
-
+          <CardJson />
         </div>
 
         <Footer />
@@ -31,7 +21,7 @@ function Home() {
 
 
 
-      
+
     </>
 
   )
@@ -59,10 +49,19 @@ const CardJson = () => {
   }, []);
 
   return (
-    <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
-    {Object.keys(data).map((key) => (
-      <Card key={key} index={key}/>
-    ))}
-  </div>
+    <div className='class="flex w-full flex-col gap-y-4"'>
+      {Object.keys(data).map((key) => (
+        <>
+          <div key={key + "text"} className="text-lg font-semibold text-black">{key}</div>
+          <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
+            {Object.keys(data[key]).map((subKey) => (
+              <Card key={subKey + "content"} index={key + "." + subKey} />
+            ))}
+          </div>
+        </>
+
+      ))}
+    </div>
+
   );
 };

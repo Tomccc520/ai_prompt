@@ -1,11 +1,10 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useRouter } from "next/router";
+
 
 
 
 export default function Card({index}) {
-
     const t = useTranslations(index)
     
     return (
@@ -19,3 +18,13 @@ export default function Card({index}) {
       </Link>
     )
 }
+
+export function getStaticProps({ locale }: { locale: string }) {
+    return {
+      props: {
+        messages: {
+          ...require(`../messages/${locale}.json`),
+        },
+      },
+    }
+  }

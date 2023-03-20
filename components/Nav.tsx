@@ -26,7 +26,7 @@ const LoginButton = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4"
           onClick={() => setShowModal(true)}
         >
-          Login
+          登录
         </button>
         {showModal ? (
           <div className="fixed z-10 inset-0">

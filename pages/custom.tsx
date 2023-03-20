@@ -19,8 +19,11 @@ const CardPage: NextPage = () => {
 
   const router = useRouter();
   const { index }: any = router.query;
+  if(index == undefined) {
+    return(<></>)
+  }
   const t = useTranslations(index)
-
+    // debugger
   const [loading, setLoading] = useState(false);
   const [chat, setChat] = useState("");
   const [form, setForm] = useState<FormType>("paragraphForm");
@@ -252,7 +255,7 @@ export function getStaticProps({ locale }: { locale: string }) {
     return {
       props: {
         messages: {
-          ...require(`../messages/${locale}.json`),
+          ...require(`../messages/zh.json`),
         },
       },
     }
