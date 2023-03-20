@@ -15,6 +15,10 @@ function Home() {
 
           <div className='class="flex w-full flex-col gap-y-4"'>
             <div className="text-lg font-semibold text-black">效率工具</div>
+            {/* <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
+              <Card  index={"week"}/>
+              <Card  index={"red-book"}/>
+            </div> */}
             <CardJson/>
           </div>
 
@@ -57,7 +61,7 @@ const CardJson = () => {
   return (
     <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
     {Object.keys(data).map((key) => (
-      <Card  index={key}/>
+      <Card key={key} index={key}/>
     ))}
   </div>
   );
