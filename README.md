@@ -67,3 +67,4 @@ services:
 
 
 https://aitools.run/
+https://emojipedia.org/man-health-worker/
