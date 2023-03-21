@@ -3,11 +3,6 @@ import { useState } from "react";
 
 export default function Nav() {
 
-  const [activeTab, setActiveTab] = useState('tabA');
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  }
 
   return (
     <nav className="sticky top-0 left-0 w-full flex-none border-b border-slate-900/10  backdrop-blur">
