@@ -7,24 +7,29 @@ export default function Footer() {
       
       <div>
       <ContactLink />
-        Powered by{" "}
+        <span className="text-black text-opacity-25">Powered by{" "}</span>
         <a
           href="https://openai.com/"
           target="_blank"
           rel="noreferrer"
-          className=" hover:underline transition underline-offset-2"
+          className="text-black text-opacity-25 hover:underline transition underline-offset-2"
         >
           OpenAI{" "}
         </a>
-        and{" "}
+        <span className="text-black text-opacity-25">and{" "}</span>
+        
         <a
           href="https://vercel.com/"
           target="_blank"
           rel="noreferrer"
-          className=" hover:underline transition underline-offset-2"
+          className="text-black text-opacity-25 hover:underline transition underline-offset-2"
         >
           Vercel Edge Functions.
         </a>
+        <span className="text-black text-opacity-25" id="busuanzi_container_site_pv"> | 本站总访问量<span id="busuanzi_value_site_pv" className="text-black text-opacity-25"></span>次</span>
+        <span className="text-black text-opacity-25" id="busuanzi_container_site_uv">
+         | 本站访客数<span className="text-black text-opacity-25" id="busuanzi_value_site_uv"></span>人次
+      </span>
         
       </div>
 
@@ -37,6 +42,7 @@ const ContactLink = () => {
 
   return (
     <>
+    
       <a
       target="_blank"
           rel="noreferrer"

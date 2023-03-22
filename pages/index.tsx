@@ -8,6 +8,7 @@ function Home() {
   return (
 
     <>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
       <div className="min-h-screen">
         <Nav />
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export default function Nav() {
 
-
+  const [showPoints, setShowPoints] = useState(false);
   return (
     <nav className="sticky top-0 left-0 w-full flex-none border-b border-slate-900/10  backdrop-blur">
       <div className="max-w-8xl mx-auto">
@@ -14,10 +14,10 @@ export default function Nav() {
             </a>
             <div className="ml-auto flex">
            
-          <Link href="/" className="text-xl  hover:ring-2 hover:ring-black  font-bold  py-1 px-4" >
+          <Link href="/" className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2" >
             prompt广场
           </Link>
-          <Link href="/pageB" className="text-xl  font-bold  py-1 px-4 text-black text-opacity-25 cursor-not-allowed  pointer-events-none" >
+          <Link href="/pageB" className="text-base  font-bold  py-1 px-2 text-black text-opacity-25 cursor-not-allowed  pointer-events-none" >
           prompt孵化园
           </Link>
             </div>
@@ -25,7 +25,13 @@ export default function Nav() {
             <div className="ml-auto flex">
             <AddPromptButton />
               <LoginButton />
-              
+              <div className="flex ml-2 items-center relative" onClick={() => setShowPoints(!showPoints)}>
+                <a href="#" className=" text-xl font-bold py-4 px-4 text-black text-opacity-25 cursor-not-allowed  pointer-events-none">User</a>
+                {showPoints && <div className="w-25 absolute text-sm top-16 -left-5 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                  <p className="p-2">当前积分:12</p>
+                  <a className="p-2">退出</a>
+                </div>}
+              </div>
             </div>
           </div>
         </div>
@@ -40,7 +46,7 @@ const LoginButton = () => {
   return (
     <>
       <button
-        className="bg-black  text-white font-bold py-1 px-4 rounded-md m-4 sm:text-sm"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm"
         onClick={() => setShowModal(true)}
       >
         登录
@@ -155,7 +161,7 @@ const AddPromptButton = () => {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-4 rounded-md m-4"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm"
         onClick={() => setShowModal(true)}
       >
         增加prompt
