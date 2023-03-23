@@ -8,6 +8,7 @@ export default function Card({index}) {
     const t = useTranslations(index)
     
     return (
+      
         <Link prefetch  className="rounded-lg bg-white shadow-xl shadow-black/5 ring-1 ring-slate-700/10" href={{ pathname: "/custom", query: { index: index } }}>
         <div className="flex flex-col p-4">
           <div className="flex items-center gap-2">
