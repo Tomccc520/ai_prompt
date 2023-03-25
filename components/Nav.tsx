@@ -8,19 +8,19 @@ import { LoginForm, RegisterForm } from "./User";
 export default function Nav() {
 
 
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [cookies, setCookie, removeCookie] = useCookies(['Cookie']);
 
   const [showLoginBtn, setshowLoginBtn] = useState(false);
 
 
   useEffect(() => {
-    setshowLoginBtn(cookies.user == null)
-  }, [cookies.user]);
+    setshowLoginBtn(cookies.Cookie == null)
+  }, [cookies.Cookie]);
 
 
 
   const handelLogout = () => {
-    removeCookie("user")
+    removeCookie("Cookie")
     toast.success("退出成功！")
     setshowLoginBtn(true)
     

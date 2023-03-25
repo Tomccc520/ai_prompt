@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
-import React from "react";
 
-
-
-
-
+import { smsCodeSender,registerUser,loginUser,getUsers } from "../pages/api/backend";
+import getIp from "../utils/ipUtil";
 
 /**
  *
@@ -16,56 +12,72 @@ import React from "react";
  */
 export function LoginForm() {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie] = useCookies(['user']);
-  const router = useRouter()
+  const [cookies, setCookie] = useCookies(["Cookie"]);
+  const router = useRouter();
 
-  const [visible, setVisible] = React.useState(false);
-  const handler = () => setVisible(true);
-  const closeHandler = () => {
-    setVisible(false);
-    console.log("closed");
-  };
+  const handleLogin = async (e: any) => {
+    const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
+      .value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
 
-
-  
-
-  const handleLogin = (e:any) => {
-
-    const username = (document.getElementById('username') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
-
-    if(username === "" || username == null || password === "" || password == null) {
-      toast.error("账号密码不能为空")
-      return
+    if (
+      phoneNumber === "" ||
+      phoneNumber == null ||
+      password === "" ||
+      password == null
+    ) {
+      toast.error("账号密码不能为空");
+      return;
     }
+
 
     // console.log("username:"+username+"password:"+password)
     try {
       // 登录api
+      const response = await loginUser(phoneNumber,password)
+      
+      let headers = response.headers
+      console.log(headers.get("cookie"))
+      if(headers.get("cookie") == null || headers.get("cookie") == "") {
+        toast.error("登陆失败！");
+        return
+      }
 
-      const data = ""
-      setCookie("user", {"username":username}, {
-        path: "/",
-        maxAge: 3600 * 24, // cookeie 一小时后过期
-        sameSite: true,
-      })
+      let cookie = headers.get("cookie")
+      console.log(cookie)
+      getUsers(cookie)
+
+      setCookie(
+        "Cookie",
+        cookie,
+        {
+          path: "/",
+          maxAge: 86400, // cookeie 一小时后过期
+          sameSite: true,
+        }
+      );
+
+      setShowModal(false);
+      toast.success("登陆成功！");
+      
+
     } catch (err) {
-      console.log(err)
+      console.log(err);
+      toast.error("登陆失败！");
+
     }
-    
-    console.log(cookies)
-    setShowModal(false)
-    toast.success("登陆成功！")
+
    
-  }
+  };
 
   const loginTextOpacityClick = (e) => {
     if (e.target.style.opacity === "100") {
-       e.target.style.opacity = "0.5";
+      e.target.style.opacity = "0.5";
     } else {
-       e.target.style.opacity = "100";
+      e.target.style.opacity = "100";
     }
- }
+  };
 
   return (
     <>
@@ -103,8 +115,12 @@ export function LoginForm() {
                       className="text-2xl leading-6 font-bold text-black-900 flex justify-center items-center"
                       id="modal-headline"
                     >
-                        <span className="flex-auto text-center cursor-pointer" onClick={(e) => loginTextOpacityClick(e)}>登录</span>
-                        
+                      <span
+                        className="flex-auto text-center cursor-pointer"
+                        onClick={(e) => loginTextOpacityClick(e)}
+                      >
+                        登录
+                      </span>
 
                       <button
                         type="button"
@@ -131,35 +147,36 @@ export function LoginForm() {
 
                     <div className="mt-5 sm:flex sm:items-center flex-col">
                       <div className="w-full sm:max-w-xs mb-4">
-                        <label htmlFor="username" className="sr-only">
-                          Username
+                        <label htmlFor="phoneNumber" className="sr-only">
+                          手机号
                         </label>
                         <input
                           type="text"
-                          name="username"
-                          id="username"
+                          name="phoneNumber"
+                          id="phoneNumber"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                          placeholder="Username"
+                          placeholder="手机号"
                         />
                       </div>
                       <div className=" w-full sm:max-w-xs mb-4">
                         <label htmlFor="password" className="sr-only">
-                          Password
+                          密码
                         </label>
                         <input
                           type="password"
                           name="password"
                           id="password"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                          placeholder="Password"
+                          placeholder="密码"
                         />
                       </div>
+
                       <div className=" text-center mt-3 w-full sm:mt-0 sm:ml-3 sm:max-w-xs flex items-center">
                         <button
                           className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
                           onClick={(e) => {
-                            console.log("Login button clicked")
-                            handleLogin(e)
+                            console.log("Login button clicked");
+                            handleLogin(e);
                           }}
                         >
                           登录
@@ -183,49 +200,131 @@ export function LoginForm() {
  */
 export function RegisterForm() {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie] = useCookies(['user']);
-  const router = useRouter()
+  const [cookies, setCookie] = useCookies(["user"]);
+  const router = useRouter();
+
+  const [isSending, setIsSending] = useState(false);
+  const [countdown, setCountdown] = useState(30);
+
+  useEffect(() => {
+    let intervalId;
+    if (isSending && countdown > 0) {
+      intervalId = setInterval(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      setIsSending(false);
+      setCountdown(30);
+    }
+    return () => clearInterval(intervalId);
+  }, [isSending, countdown]);
+
+  const handleSendCode = () => {
+    setIsSending(true);
+    const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
+    .value;
+    smsCodeSender(phoneNumber)
+    .then(response => {
+      if (response.ok) {
+        // 返回响应结果的 JSON 格式
+        return response.json();
+      } else {
+        console.log("registerUser Network response was not ok.");
+      }
+    })
+    .then(data => {
+      if(data.status != 200) {
+        toast.error(data.message);
+        return
+      }
+      toast.success("验证码发送成功！")
+    })
+    .catch(e => {
+      toast.error(e);
+    })
+  };
 
 
-  const handleRegister = (e:any) => {
 
-    const username = (document.getElementById('username') as HTMLInputElement).value;
-    const password = (document.getElementById('password') as HTMLInputElement).value;
+  const handleRegister = (e: any) => {
+    const username = (document.getElementById("username") as HTMLInputElement)
+      .value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
+      const phoneNumber = (document.getElementById("phoneNumber") as HTMLInputElement)
+      .value;
+      const smscode = (document.getElementById("smscode") as HTMLInputElement)
+      .value;
 
     // console.log("username:"+username+"password:"+password)
-    if(username === "" || username == null || password === "" || password == null) {
-      toast.error("账号密码不能为空")
-      return
+    if (
+      username === "" ||
+      username == null ||
+      password === "" ||
+      password == null ||
+      phoneNumber === "" ||
+      phoneNumber == null ||
+      smscode === "" || 
+      smscode == null
+    ) {
+      toast.error("账号密码或手机号不能为空");
+      return;
+    }
+
+    let user = {
+      "phoneNumbers":phoneNumber,
+      "userName":username,
+      "password":password,
+      "verificationCode":smscode,
+      "ipaddress":getIp()
+
     }
 
     try {
       // 注册api
-
-      // 判断注册是否成功，成功则调用登录api
-
-      const data = ""
-
-      setCookie("user", JSON.stringify(data), {
-        path: "/",
-        maxAge: 3600 * 24, // cookeie 一小时后过期
-        sameSite: true,
+      registerUser(user)
+      .then(response => {
+        if (response.ok) {
+          // 返回响应结果的 JSON 格式
+          return response.json();
+        } else {
+          console.log("registerUser Network response was not ok.");
+          throw new Error('registerUser Network response was not ok.');
+        }
+      }).then(data => {
+        if(data.status != 200) {
+          toast.error(data.message);
+          return
+        }
+        console.log(data)
+         // 判断注册是否成功，成功则调用登录api
+        setCookie("user", JSON.stringify(user), {
+          path: "/",
+          maxAge: 3600 * 24, // cookeie 一小时后过期
+          sameSite: true,
+        });
+        console.log(cookies);
+        setShowModal(false);
+        toast.success("注册成功！");
+        router.push("/");
       })
+      
+    
+
+     
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    console.log(cookies)
-    setShowModal(false)
-    toast.success("注册成功！")
-    router.push("/")
-  }
+   
+  };
 
   const loginTextOpacityClick = (e) => {
     if (e.target.style.opacity === "100") {
-       e.target.style.opacity = "0.5";
+      e.target.style.opacity = "0.5";
     } else {
-       e.target.style.opacity = "100";
+      e.target.style.opacity = "100";
     }
- }
+  };
 
   return (
     <>
@@ -262,8 +361,14 @@ export function RegisterForm() {
                     <h3
                       className="text-2xl leading-6 font-bold text-black-900 flex justify-center items-center"
                       id="modal-headline"
-                    >                        
-                         <span className="flex-auto text-center text-black cursor-pointer" onClick={(e) => loginTextOpacityClick(e)}> 注册</span>
+                    >
+                      <span
+                        className="flex-auto text-center text-black cursor-pointer"
+                        onClick={(e) => loginTextOpacityClick(e)}
+                      >
+                        {" "}
+                        注册
+                      </span>
 
                       <button
                         type="button"
@@ -291,37 +396,70 @@ export function RegisterForm() {
                     <div className="mt-5 sm:flex sm:items-center flex-col">
                       <div className="w-full sm:max-w-xs mb-4">
                         <label htmlFor="username" className="sr-only">
-                          Username
+                          账号
                         </label>
                         <input
                           type="text"
                           name="username"
                           id="username"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                          placeholder="Username"
+                          placeholder="账号"
                         />
                       </div>
                       <div className=" w-full sm:max-w-xs mb-4">
                         <label htmlFor="password" className="sr-only">
-                          Password
+                          密码
                         </label>
                         <input
                           type="password"
                           name="password"
                           id="password"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                          placeholder="Password"
+                          placeholder="密码"
                         />
+                      </div>
+                      <div className=" w-full sm:max-w-xs mb-4">
+                        <label htmlFor="phoneNumber" className="sr-only">
+                          手机号
+                        </label>
+                        <input
+                          type="text"
+                          name="phoneNumber"
+                          id="phoneNumber"
+                          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          placeholder="手机号"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="flex flex-row items-center justify-center">
+                          <input
+                            type="text"
+                            id="smscode"
+                            placeholder="请输入验证码"
+                            className="w-48 h-10 px-2 py-1 border border-gray-300 rounded-md mr-2"
+                          />
+                          <button
+                            className={
+                              isSending
+                                ? " w-24 h-10 rounded-md text-white bg-gray-400 cursor-not-allowed"
+                                : "w-24 h-10 rounded-md text-white bg-blue-500 hover:bg-blue-600"
+                            }
+                            onClick={handleSendCode}
+                            disabled={isSending}
+                          >
+                            {isSending ? `${countdown}s` : "发送"}
+                          </button>
+                        </div>
                       </div>
                       <div className=" text-center mt-3 w-full sm:mt-0 sm:ml-3 sm:max-w-xs flex items-center">
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
                           onClick={(e) => {
-                            console.log("Register button clicked")
-                            handleRegister(e)
+                            console.log("Register button clicked");
+                            handleRegister(e);
                           }}
                         >
-                          注册
+                          完成
                         </button>
                       </div>
                     </div>
