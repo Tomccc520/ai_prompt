@@ -46,7 +46,12 @@ export function LoginForm() {
 
       let cookie = headers.get("cookie")
       console.log(cookie)
-      getUsers(cookie)
+      await getUsers(cookie)
+
+      if(registerUser == null) {
+        toast.error("登陆失败！");
+        return
+      }
 
       setCookie(
         "Cookie",

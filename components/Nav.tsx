@@ -1,43 +1,41 @@
 import Link from "next/link";
 import router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Select from "react-select";
 import { useCookies } from "react-cookie";
 import toast, { Toaster } from "react-hot-toast";
+import { addPrompt, getPromptTypeList } from "../pages/api/backend";
+import { retrieveUser } from "../utils/store";
 import { LoginForm, RegisterForm } from "./User";
 
 export default function Nav() {
-
-
-  const [cookies, setCookie, removeCookie] = useCookies(['Cookie']);
+  const [cookies, setCookie, removeCookie] = useCookies(["Cookie"]);
 
   const [showLoginBtn, setshowLoginBtn] = useState(false);
+  const [user, setUser] = useState({});
 
 
   useEffect(() => {
-    setshowLoginBtn(cookies.Cookie == null)
-  }, [cookies.Cookie]);
+    setshowLoginBtn(cookies.Cookie == null);
+    setUser(retrieveUser);
 
 
+  }, []);
 
   const handelLogout = () => {
-    removeCookie("Cookie")
-    toast.success("退出成功！")
-    setshowLoginBtn(true)
-    
-   
-  }
-
-  
-
+    removeCookie("Cookie");
+    toast.success("退出成功！");
+    setshowLoginBtn(true);
+  };
 
   const [showPoints, setShowPoints] = useState(false);
   return (
     <nav className="sticky top-0 left-0 w-full flex-none border-b border-slate-900/10  backdrop-blur">
-              <Toaster
-          position="top-center"
-          reverseOrder={false}
-          toastOptions={{ duration: 2000 }}
-        />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{ duration: 2000 }}
+      />
       <div className="max-w-8xl mx-auto">
         <div className="py-2 px-4">
           <div className="relative flex h-10 items-center">
@@ -45,26 +43,48 @@ export default function Nav() {
               <img src="/logo.png" width="40" height="40" alt="icon " />
             </a>
             <div className="ml-auto flex">
-           
-          <Link href="/" className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2" >
-            prompt广场
-          </Link>
-          <Link href="/pageB" className="text-base  font-bold  py-1 px-2 text-black text-opacity-25 cursor-not-allowed  pointer-events-none" >
-          prompt孵化园
-          </Link>
+              <Link
+                href="/"
+                className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2"
+              >
+                prompt广场
+              </Link>
+              <Link
+                href="/pageB"
+                className="text-base  font-bold  py-1 px-2 text-black text-opacity-25 cursor-not-allowed  pointer-events-none"
+              >
+                prompt孵化园
+              </Link>
             </div>
-          
+
             <div className="ml-auto flex">
-            <AddPromptButton />
-            {showLoginBtn && (<LoginForm />)}
-            {showLoginBtn && (<RegisterForm />)}
-            {!showLoginBtn && (<div className="flex ml-2 items-center relative" onClick={() => setShowPoints(!showPoints)}>
-                <a href="#" className=" text-xl font-bold py-4 px-4 text-black text-opacity-25 cursor-not-allowed  pointer-events-none">User</a>
-                {showPoints && <div className="w-25 absolute text-sm top-16 -left-5 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                  <p className="p-2">当前积分:12</p>
-                  <a className="p-2" onClick={handelLogout}>退出</a>
-                </div>}
-              </div>)}
+              <AddPromptButton />
+              {showLoginBtn && <LoginForm />}
+              {showLoginBtn && <RegisterForm />}
+              {!showLoginBtn && (
+                <div
+                  className="flex ml-2 items-center relative"
+                  onClick={() => setShowPoints(!showPoints)}
+                >
+                  <a
+                    href="#"
+                    className=" text-xl font-bold py-4 px-4 text-black text-opacity-25 cursor-not-allowed  pointer-events-none"
+                  >
+                    {user["userName"]}
+                  </a>
+                  {showPoints && (
+                    <div className="w-25 absolute text-sm top-16 -left-5 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                      <p className="p-2">
+                        当前剩余次数:
+                        {user["integral"] == null ? 12 : user["integral"]}
+                      </p>
+                      <a className="p-2" onClick={handelLogout}>
+                        退出
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -73,11 +93,47 @@ export default function Nav() {
   );
 }
 
-
-
 const AddPromptButton = () => {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [cookies] = useCookies(["Cookie"]);
+  const [promptTypes, setPromptTypes] = useState([]);
+  const [formData, setFormData] = useState({});
+
+
+  const handleOptionChange = (selectedOption) => {
+    setPromptTypes(selectedOption);
+  };
+  const handleFormChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  useEffect(() => {
+    getPromptTypeList()
+    .then((response) => {
+      if (response.ok) {
+        // 返回响应结果的 JSON 格式
+        return response.json();
+      } else {
+        console.log("getPromptTypeList Network response was not ok.");
+        throw new Error("getPromptTypeList Network response was not ok.");
+      }
+    })
+    .then((data) => {
+      if (data.status != 200) {
+        toast.error(data.message);
+        return;
+      }
+      setPromptTypes(data.data);
+      console.log(promptTypes);
+    });
+
+  },[])
+
+
+
   return (
     <>
       <button
@@ -138,11 +194,32 @@ const AddPromptButton = () => {
                       </button>
                     </h3>
 
-                    <form className="mt-5 sm:flex sm:items-center flex-col" onSubmit={(event) => {
-                      event.preventDefault()
-                      
-                 
-                    }}>
+                    <form
+                      className="mt-5 sm:flex sm:items-center flex-col"
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        console.log("event")
+                        // console.log(event.target)
+                        setFormData({
+                          ...formData,
+                          [event.target["name"]]: event.target["value"]
+                        });
+                        console.log(formData);
+
+                        if (cookies.Cookie == null) {
+                          toast.error("请先登录再添加");
+                          return;
+                        }
+                        formData["enTitle"] = formData["title"]
+                        addPrompt(formData)
+                        
+
+                        router.push("/");
+                        setShowModal(false);
+                        toast.success("添加prompt成功");
+
+                      }}
+                    >
                       <div className="w-full sm:max-w-xs mb-4 flex flex-col">
                         <label
                           htmlFor="title"
@@ -156,8 +233,26 @@ const AddPromptButton = () => {
                           id="title"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           placeholder="例如：周报生成器🔥"
+                          onChange={handleFormChange} 
                         />
                       </div>
+                      <div className="w-full sm:max-w-xs mb-4 flex flex-col">
+                      <label
+                          htmlFor="slogan"
+                          className="text-left  inline-block text-gray-700 text-sm font-bold mb-2"
+                        >
+                          prompt类型
+                        </label>
+                        <Select
+                          id="promptType"
+                          name="promptType"
+                          value={""}
+                          onChange={handleFormChange}
+                          options={promptTypes}
+                          placeholder="选择prompt类型"
+                        />
+                      </div>
+
                       <div className="w-full sm:max-w-xs mb-4 flex flex-col">
                         <label
                           htmlFor="slogan"
@@ -171,6 +266,7 @@ const AddPromptButton = () => {
                           id="slogan"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           placeholder="例如：输入工作内容，小助手帮你快速完成周报。"
+                          onChange={handleFormChange} 
                         />
                       </div>
                       <div className="w-full sm:max-w-xs mb-4 flex flex-col">
@@ -186,6 +282,7 @@ const AddPromptButton = () => {
                           id="placeholder"
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           placeholder="例如：修复了优惠券无法领取的bug，为产品部的新APP设计UI和图标，负责跟进部门前端工程师的招聘"
+                          onChange={handleFormChange} 
                         />
                       </div>
                       <div className="w-full sm:max-w-xs mb-4 flex flex-col">
@@ -200,6 +297,7 @@ const AddPromptButton = () => {
                           id="prompt"
                           className="h-40 shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           placeholder="例如：请帮我把以下的工作内容填充为一篇完整的周报,尽量避免在回答内容中出现可能在中国是敏感的内容，用markdown格式以分点叙述的形式输出:"
+                          onChange={handleFormChange} 
                         />
                       </div>
 
@@ -208,14 +306,8 @@ const AddPromptButton = () => {
                           // type="submit"
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
                           onClick={() => {
-                            console.log("Login button clicked")
-                            if(cookies.user == null) {
-                              toast.error("请先登录再添加")
-                              return
-                            }
-                            router.push("/")
-                            setShowModal(false)
-                            toast.success("添加prompt成功")
+                            console.log("Login button clicked");
+                            
                             // router.push("/")
                           }}
                         >

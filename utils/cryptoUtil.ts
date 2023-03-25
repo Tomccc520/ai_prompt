@@ -15,7 +15,7 @@ const encryptData = (data,secretKey) => {
 
 
 function decryptData(word: any,secretKey:string,iv:string) {
-    debugger
+    // debugger
     // word = (word + '').replace(/\n*$/g, '').replace(/\n/g, ''); //增加这一行，将换行符替换为空
     let base64 = CryptoJS.enc.Base64.parse(word);
     let src = CryptoJS.enc.Base64.stringify(base64);
