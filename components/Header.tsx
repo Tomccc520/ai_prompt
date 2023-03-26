@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center w-full mt-5 pb-7 sm:px-4 px-2">
-
+      <title>prompt百宝箱</title>
       <Link href="/" className="flex space-x-3 m-5">
         <Image
           alt="回退首页"

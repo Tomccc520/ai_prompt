@@ -20,7 +20,6 @@ function PromptsPark() {
         <div className='container mx-auto pb-10 pt-4'>
           <CardJson />
         </div>
-
         <Footer />
       </div>
     </>

@@ -1,4 +1,4 @@
-import path from 'path'
+
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Card from '../components/Card'
@@ -20,7 +20,6 @@ function Home() {
         <div className='container mx-auto pb-10 pt-4'>
           <CardJson />
         </div>
-
         <Footer />
       </div>
     </>
@@ -30,14 +29,7 @@ function Home() {
 
 export default Home
 
-export function getStaticProps({ locale }: { locale: string }) {
-  debugger
-  return {
-    props: {
-      prompts,
-    },
-  }
-}
+
 
 
 const CardJson = () => {
@@ -76,7 +68,7 @@ const CardJson = () => {
     <div className='class="flex w-full flex-col gap-y-4"'>
       {Object.keys(data).map((key) => (
         <>
-          <div key={key + "text"} className="text-lg font-semibold text-black">{key}</div>
+          <div key={key + "text"} className="text-xl font-semibold text-black mx-4">{key}</div>
           <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
             {Object.keys(data[key]).map((subKey) => (
               <Card key={subKey + "content"} index={key+"."+subKey} value={data[key][subKey]} />
@@ -89,3 +81,4 @@ const CardJson = () => {
 
   );
 };
+

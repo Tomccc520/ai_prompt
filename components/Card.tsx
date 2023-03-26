@@ -15,7 +15,7 @@ export default function Card({index,value}) {
         <Link  className="rounded-lg bg-white shadow-xl shadow-black/5 ring-1 ring-slate-700/10 " href={{ pathname: "/custom", query: { index: index } }}>
         <div className="flex flex-col p-4">
           <div className="flex items-center gap-2">
-            <span className="text-lg font-semibold text-black">{t["title"]}</span>
+            <span className="text-lg  text-black">{t["title"]}</span>
           </div>
           <span className="mt-4 text-sm text-gray-500">{t["slogan"]}</span>
         </div>

@@ -5,10 +5,10 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.png" />
           <meta
-            name="description"
-            content="Simplify your chat content in seconds."
+            name="site"
+            content="prompt 百宝箱"
           />
           <meta property="og:site_name" content="Chat Simplifier" />
           <meta

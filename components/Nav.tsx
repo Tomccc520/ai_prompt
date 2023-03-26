@@ -17,7 +17,8 @@ export default function Nav() {
 
   useEffect(() => {
     setshowLoginBtn(cookies.Cookie == null);
-    setUser(retrieveUser);
+    let user = retrieveUser()
+    setUser(user);
 
 
   }, [cookies]);
@@ -40,21 +41,20 @@ export default function Nav() {
         <div className="py-2 px-4">
           <div className="relative flex h-10 items-center">
             <a className="font-semibold text-black" href="/">
-              <img src="/logo.png" width="40" height="40" alt="icon " />
+              <img src="/logo.png" width="100" height="40" alt="icon " />
             </a>
             <div className="ml-auto flex">
               <Link
                 href="/"
                 className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2"
-              >
-                🔥prompt广场
+              >prompt广场🔥
               </Link>
               <Link
                 href="/promptsPark"
                 className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2"
                 // text-black text-opacity-25 cursor-not-allowed  pointer-events-none
               >
-                🆕prompt孵化园
+                prompt孵化🆕
               </Link>
             </div>
 

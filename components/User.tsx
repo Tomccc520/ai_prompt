@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 import { smsCodeSender,registerUser,loginUser,getUsers } from "../pages/api/backend";
 import getIp from "../utils/ipUtil";
+import { saveUser } from "../utils/store";
 
 /**
  *
@@ -66,6 +67,7 @@ export function LoginForm() {
      
       toast.success("登陆成功！");
       setShowModal(false);
+      router.reload()
       
 
     } catch (err) {

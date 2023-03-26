@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -42,7 +43,12 @@ const ContactLink = () => {
 
   return (
     <>
-    
+     <div className="fixed bottom-0 right-0 bg-white shadow-lg rounded-lg hover:cursor-pointer" onClick={() => setShowModal(true)}>
+      <div className="text-center">
+        <Image src="/wx_qrcode.jpg" width={120} height={120} alt="公众号二维码" className='m-0 items-center' />
+        <p className="text-gray-700 text-sm">解锁更多prompt!</p>
+      </div>
+    </div>
       <a
       target="_blank"
           rel="noreferrer"
@@ -69,7 +75,7 @@ const ContactLink = () => {
 
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <h3 className="text-2xl leading-6 font-bold text-black-900 flex justify-center items-center" id="modal-headline">
-                    交流群链接，讨论更多玩法
+                    关注公众号，获取交流群链接
                     <button
                       type="button"
                       className="inline-flex justify-center  border border-transparent  px-2 py-2  text-base font-medium text-black  focus:outline-none  focus:ring-black-500 sm:ml-3 sm:w-auto sm:text-sm"                        onClick={() => setShowModal(false)}
@@ -92,7 +98,7 @@ const ContactLink = () => {
                     </button>
                   </h3>
                     
-                  <img src="https://img.ggball.top/picGo/wwj.png" alt="交流群链接" style={{display: "block", margin: "auto"}}/>
+                  <img src="/wx_qrcode.jpg" alt="公众号二维码" style={{display: "block", margin: "auto"}}/>
                   </div>
                 </div>
               </div>
