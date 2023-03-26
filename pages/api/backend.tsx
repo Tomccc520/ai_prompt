@@ -4,8 +4,8 @@ import { saveUser } from "../../utils/store";
 
 
 const api = {
-    // baseURL: 'http://127.0.0.1:9500/tool',
-    baseURL: 'https://toolkit.show/tool',
+    baseURL: 'http://127.0.0.1:9500/tool',
+    // baseURL: 'https://toolkit.show/tool',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -73,7 +73,7 @@ const  form_headers = {
           }
         });
 
-        export const getPromptList = () => fetch(`${api.baseURL}/api/prompt/list`, 
+        export const getPromptList = (status) => fetch(`${api.baseURL}/api/prompt/list?status=${status}`, 
         { 
            credentials: 'include',
            method: 'GET',
@@ -82,6 +82,16 @@ const  form_headers = {
              'Content-Type': 'application/json',
            }
          });
+
+         export const reqCount = (ip) => fetch(`${api.baseURL}/api/userInfo/reqCount?ipAddress=${ip}`, 
+         { 
+            credentials: 'include',
+            method: 'GET',
+            headers: {
+             //  'Cookie': cookie,
+              'Content-Type': 'application/json',
+            }
+          });
   
 //   export const deleteUser = (id) => fetch(`${api.baseURL}/users/${id}`, { method: 'DELETE' });
 //   export const getUsers = () => fetch(`${api.baseURL}/users`);

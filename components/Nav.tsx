@@ -5,7 +5,7 @@ import Select from "react-select";
 import { useCookies } from "react-cookie";
 import toast, { Toaster } from "react-hot-toast";
 import { addPrompt, getPromptTypeList } from "../pages/api/backend";
-import { retrieveUser } from "../utils/store";
+import { removeUser, retrieveUser } from "../utils/store";
 import { LoginForm, RegisterForm } from "./User";
 
 export default function Nav() {
@@ -24,6 +24,7 @@ export default function Nav() {
 
   const handelLogout = () => {
     removeCookie("Cookie");
+    removeUser()
     toast.success("退出成功！");
   };
 
@@ -46,13 +47,14 @@ export default function Nav() {
                 href="/"
                 className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2"
               >
-                prompt广场
+                🔥prompt广场
               </Link>
               <Link
-                href="/pageB"
-                className="text-base  font-bold  py-1 px-2 text-black text-opacity-25 cursor-not-allowed  pointer-events-none"
+                href="/promptsPark"
+                className="text-base  hover:ring-2 hover:ring-black  font-bold  py-1 px-2"
+                // text-black text-opacity-25 cursor-not-allowed  pointer-events-none
               >
-                prompt孵化园
+                🆕prompt孵化园
               </Link>
             </div>
 
@@ -215,6 +217,9 @@ const AddPromptButton = () => {
                           return;
                         }
                         formData["enTitle"] = formData["title"]
+                        if(!formData["parentId"]) {
+                          formData["parentId"] = 2
+                        }
                         addPrompt(formData)
                         .then(response => {
                           if (response.ok) {
@@ -269,6 +274,7 @@ const AddPromptButton = () => {
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           name="parentId"
                           id="parentId"
+                          defaultValue={options[0]["id"]}
                           onChange={handleFormChange}>
                             {options.map(option => (
                               <option key={option["id"]} value={option["id"]}>
@@ -350,3 +356,5 @@ const AddPromptButton = () => {
     </>
   );
 };
+
+

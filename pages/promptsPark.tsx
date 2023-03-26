@@ -1,15 +1,15 @@
 import path from 'path'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import Card from '../components/Card'
+import Card, { CardUnavailable } from '../components/Card'
 import Footer from '../components/Footer'
 import Nav from '../components/Nav'
 import { retrievePrompts, savePrompts } from '../utils/store'
 import { getPromptList } from './api/backend'
 
-let prompts = []
 
-function Home() {
+
+function PromptsPark() {
   return (
 
     <>
@@ -28,16 +28,7 @@ function Home() {
   )
 }
 
-export default Home
-
-export function getStaticProps({ locale }: { locale: string }) {
-  debugger
-  return {
-    props: {
-      prompts,
-    },
-  }
-}
+export default PromptsPark
 
 
 const CardJson = () => {
@@ -46,7 +37,7 @@ const CardJson = () => {
   useEffect(() => {
     // const jsonData = require('../messages/zh.json');
     // setData(jsonData);
-    getPromptList(1)
+    getPromptList("-1")
     .then(response => {
       if (response.ok) {
         // 返回响应结果的 JSON 格式
@@ -61,8 +52,6 @@ const CardJson = () => {
         return
       }
       setData(data.data);
-      prompts = data.data
-      savePrompts(data.data)
     })
     .catch(e => {
       toast.error(e);
@@ -79,7 +68,7 @@ const CardJson = () => {
           <div key={key + "text"} className="text-lg font-semibold text-black">{key}</div>
           <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 p-7'>
             {Object.keys(data[key]).map((subKey) => (
-              <Card key={subKey + "content"} index={key+"."+subKey} value={data[key][subKey]} />
+              <CardUnavailable key={subKey + "content"} index={key+"."+subKey} value={data[key][subKey]} />
             ))}
           </div>
         </>

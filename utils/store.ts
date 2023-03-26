@@ -2,7 +2,12 @@
 function saveUser(user) {
     localStorage.setItem('user', JSON.stringify(user))
   }
-  
+
+function removeUser() {
+  localStorage.removeItem('user')
+}
+
+
 function retrieveUser() {
     const user = localStorage.getItem('user')
     if (user) {
@@ -26,4 +31,4 @@ function retrievePrompts() {
   }
 }
 
-export {saveUser,retrieveUser,savePrompts,retrievePrompts}
+export {saveUser,retrieveUser,savePrompts,retrievePrompts,removeUser}

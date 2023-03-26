@@ -15,6 +15,8 @@ import { useRouter } from "next/router";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { retrievePrompts } from "../utils/store";
+import { reqCount } from "./api/backend";
+import getIp from "../utils/ipUtil";
 
 const CardPage: NextPage = () => {
 
@@ -65,6 +67,15 @@ const CardPage: NextPage = () => {
       setLoading(false)
       return
     }
+
+    debugger
+    let countRes = await reqCount(getIp())
+    if(!countRes.ok) {
+      toast.error("请登录，获取无限次数")
+      setLoading(false);
+      return
+    }
+
     const response = useUserKey ?
       await fetch("/api/generate", {
         method: "POST",
