@@ -92,16 +92,15 @@ export default function Nav() {
   );
 }
 
+
+
 const AddPromptButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [cookies] = useCookies(["Cookie"]);
-  const [promptTypes, setPromptTypes] = useState([]);
   const [formData, setFormData] = useState({});
+  const [options, setOptions] = useState([]);
 
 
-  const handleOptionChange = (selectedOption) => {
-    setPromptTypes(selectedOption);
-  };
   const handleFormChange = (event) => {
     setFormData({
       ...formData,
@@ -126,13 +125,16 @@ const AddPromptButton = () => {
           toast.error(data.message);
           return;
         }
-        setPromptTypes(data.data);
-        console.log(promptTypes);
+        
+        setOptions(data.data);
+        console.log(data.data);
+        console.log(options);
       });
     }
 
 
   },[])
+
 
 
 
@@ -214,11 +216,29 @@ const AddPromptButton = () => {
                         }
                         formData["enTitle"] = formData["title"]
                         addPrompt(formData)
+                        .then(response => {
+                          if (response.ok) {
+                            // 返回响应结果的 JSON 格式
+                            return response.json();
+                          } else {
+                            console.log("registerUser Network response was not ok.");
+                          }
+                        })
+                        .then(data => {
+                          if(data.status != 200) {
+                            toast.error(data.message);
+                            return
+                          }
+                          router.push("/");
+                          setShowModal(false);
+                          toast.success("添加prompt成功");
+                        })
+                        .catch(e => {
+                          toast.error(e);
+                        })
                         
 
-                        router.push("/");
-                        setShowModal(false);
-                        toast.success("添加prompt成功");
+                       
 
                       }}
                     >
@@ -245,14 +265,17 @@ const AddPromptButton = () => {
                         >
                           prompt类型
                         </label>
-                        <Select
-                          id="promptType"
-                          name="promptType"
-                          value={""}
-                          onChange={handleFormChange}
-                          options={promptTypes}
-                          placeholder="选择prompt类型"
-                        />
+                        <select 
+                          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                          name="parentId"
+                          id="parentId"
+                          onChange={handleFormChange}>
+                            {options.map(option => (
+                              <option key={option["id"]} value={option["id"]}>
+                                {option["name"]}
+                              </option>
+                            ))}
+                          </select>
                       </div>
 
                       <div className="w-full sm:max-w-xs mb-4 flex flex-col">

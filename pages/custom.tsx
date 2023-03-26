@@ -14,6 +14,7 @@ import { marked } from "marked";
 import { useRouter } from "next/router";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { retrievePrompts } from "../utils/store";
 
 const CardPage: NextPage = () => {
 
@@ -22,7 +23,18 @@ const CardPage: NextPage = () => {
   if(index == undefined) {
     return(<></>)
   }
-  const t = useTranslations(index)
+  let t = {}
+  if(index.indexOf(".") > 0) {
+    let prompts = retrievePrompts()
+    let key = index.split(".")[0]
+    let subKey = index.split(".")[1]
+    t = retrievePrompts()[key][subKey]
+    console.log(t)
+  } else{
+    return(<></>)
+  }
+
+  // const t = useTranslations(index)
     // debugger
   const [loading, setLoading] = useState(false);
   const [chat, setChat] = useState("");
@@ -34,8 +46,8 @@ const CardPage: NextPage = () => {
 
   const prompt =
     form === 'paragraphForm'?
-    t("prompt") + `${chat}`
-      :  t("prompt") + `${chat}`;
+    t["prompt"] + `${chat}`
+      :  t["prompt"] + `${chat}`;
 
   const useUserKey = process.env.NEXT_PUBLIC_USE_USER_KEY === "true" ? true : false;
 
@@ -108,7 +120,7 @@ const CardPage: NextPage = () => {
     <div className="flex w-full mx-auto flex-col items-center justify-center py-2 min-h-screen">
       <Nav />
       <Head>
-        <title>{t('title')}</title>
+        <title>{t['title']}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -116,9 +128,9 @@ const CardPage: NextPage = () => {
       <main className="flex flex-1 w-full flex-col items-center  text-center px-4 mt-12 sm:mt-20">
         
         <h3 className="sm:text-6xl text-4xl max-w-2xl font-bold ">
-          {t('title')} 
+          {t['title']} 
         </h3>
-        <p className="text-slate-500 mt-5">{t('slogan')}</p>
+        <p className="text-slate-500 mt-5">{t['slogan']}</p>
 
 
         <div className="max-w-xl w-full">
@@ -157,7 +169,7 @@ const CardPage: NextPage = () => {
             rows={4}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-2"
             placeholder={
-              t('placeholder')
+              t['placeholder']
             }
           />
 
@@ -251,13 +263,4 @@ const CardPage: NextPage = () => {
 
 export default CardPage;
 
-export function getStaticProps({ locale }: { locale: string }) {
-    return {
-      props: {
-        messages: {
-          ...require(`../messages/zh.json`),
-        },
-      },
-    }
-  }
 

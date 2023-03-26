@@ -12,4 +12,18 @@ function retrieveUser() {
     }
 }
 
-export {saveUser,retrieveUser}
+
+function savePrompts(prompts) {
+  localStorage.setItem('prompts', JSON.stringify(prompts))
+}
+
+function retrievePrompts() {
+  const prompts = localStorage.getItem('prompts')
+  if (prompts) {
+    return JSON.parse(prompts)
+  } else {
+    return null
+  }
+}
+
+export {saveUser,retrieveUser,savePrompts,retrievePrompts}

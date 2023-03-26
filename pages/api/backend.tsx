@@ -73,6 +73,15 @@ const  form_headers = {
           }
         });
 
+        export const getPromptList = () => fetch(`${api.baseURL}/api/prompt/list`, 
+        { 
+           credentials: 'include',
+           method: 'GET',
+           headers: {
+            //  'Cookie': cookie,
+             'Content-Type': 'application/json',
+           }
+         });
   
 //   export const deleteUser = (id) => fetch(`${api.baseURL}/users/${id}`, { method: 'DELETE' });
 //   export const getUsers = () => fetch(`${api.baseURL}/users`);
