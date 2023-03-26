@@ -17,7 +17,7 @@ const  form_headers = {
 
     export const registerUser = (data) => fetch(`${api.baseURL}/login/register`, { method: 'POST', body: JSON.stringify(data), headers: api.headers });
 
-    export const loginUser = (phoneNumbers,password) => fetch(`${api.baseURL}/login/login?phoneNumbers=${phoneNumbers}&password=${password}`, { method: 'POST'});
+    export const loginUser = (phoneNumbers,password) => fetch(`${api.baseURL}/login/login?phoneNumbers=${phoneNumbers}&password=${password}`, { method: 'POST', credentials: 'include'});
 
     export const smsCodeSender = (phoneNumbers) => fetch(`${api.baseURL}/login/smsCode?phoneNumbers=`+phoneNumbers, { method: 'POST' });
 
