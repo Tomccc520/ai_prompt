@@ -63,8 +63,9 @@ export function LoginForm() {
         }
       );
 
-      setShowModal(false);
+     
       toast.success("登陆成功！");
+      setShowModal(false);
       
 
     } catch (err) {
@@ -205,7 +206,7 @@ export function LoginForm() {
  */
 export function RegisterForm() {
   const [showModal, setShowModal] = useState(false);
-  const [cookies, setCookie] = useCookies(["user"]);
+  const [cookies, setCookie] = useCookies(["Cookie"]);
   const router = useRouter();
 
   const [isSending, setIsSending] = useState(false);
@@ -221,6 +222,7 @@ export function RegisterForm() {
       setIsSending(false);
       setCountdown(30);
     }
+
     return () => clearInterval(intervalId);
   }, [isSending, countdown]);
 
@@ -303,7 +305,7 @@ export function RegisterForm() {
         }
         console.log(data)
          // 判断注册是否成功，成功则调用登录api
-        setCookie("user", JSON.stringify(user), {
+        setCookie("Cookie", JSON.stringify(user), {
           path: "/",
           maxAge: 3600 * 24, // cookeie 一小时后过期
           sameSite: true,

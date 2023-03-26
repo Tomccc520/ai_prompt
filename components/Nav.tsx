@@ -20,12 +20,11 @@ export default function Nav() {
     setUser(retrieveUser);
 
 
-  }, []);
+  }, [cookies]);
 
   const handelLogout = () => {
     removeCookie("Cookie");
     toast.success("退出成功！");
-    setshowLoginBtn(true);
   };
 
   const [showPoints, setShowPoints] = useState(false);
@@ -70,13 +69,13 @@ export default function Nav() {
                     href="#"
                     className=" text-xl font-bold py-4 px-4 text-black text-opacity-25 cursor-not-allowed  pointer-events-none"
                   >
-                    {user["userName"]}
+                    {user != null ? user["userName"] : "user"}
                   </a>
                   {showPoints && (
                     <div className="w-25 absolute text-sm top-16 -left-5 bg-white border border-gray-300 rounded-md shadow-lg z-10">
                       <p className="p-2">
                         当前剩余次数:
-                        {user["integral"] == null ? 12 : user["integral"]}
+                        {user == null ? -1 : user["integral"]}
                       </p>
                       <a className="p-2" onClick={handelLogout}>
                         退出
@@ -111,24 +110,27 @@ const AddPromptButton = () => {
   };
 
   useEffect(() => {
-    getPromptTypeList()
-    .then((response) => {
-      if (response.ok) {
-        // 返回响应结果的 JSON 格式
-        return response.json();
-      } else {
-        console.log("getPromptTypeList Network response was not ok.");
-        throw new Error("getPromptTypeList Network response was not ok.");
-      }
-    })
-    .then((data) => {
-      if (data.status != 200) {
-        toast.error(data.message);
-        return;
-      }
-      setPromptTypes(data.data);
-      console.log(promptTypes);
-    });
+    if(cookies.Cookie != null) {
+      getPromptTypeList()
+      .then((response) => {
+        if (response.ok) {
+          // 返回响应结果的 JSON 格式
+          return response.json();
+        } else {
+          console.log("getPromptTypeList Network response was not ok.");
+          throw new Error("getPromptTypeList Network response was not ok.");
+        }
+      })
+      .then((data) => {
+        if (data.status != 200) {
+          toast.error(data.message);
+          return;
+        }
+        setPromptTypes(data.data);
+        console.log(promptTypes);
+      });
+    }
+
 
   },[])
 

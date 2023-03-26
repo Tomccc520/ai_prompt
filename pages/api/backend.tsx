@@ -4,8 +4,8 @@ import { saveUser } from "../../utils/store";
 
 
 const api = {
-    // baseURL: 'http://127.0.0.1:9500/tool',
-    baseURL: 'https://toolkit.show/tool',
+    baseURL: 'http://127.0.0.1:9500/tool',
+    // baseURL: 'https://toolkit.show/tool',
     headers: {
       'Content-Type': 'application/json',
     },
