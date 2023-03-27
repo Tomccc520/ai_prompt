@@ -22,14 +22,8 @@ class MyDocument extends Document {
             name="twitter:description"
             content="Simplify your chat content in seconds."
           />
-          <meta
-            property="og:image"
-            content="https://chat-simplifier.vercel.app/og-image.png"
-          />
-          <meta
-            name="twitter:image"
-            content="https://chat-simplifier.vercel.app/og-image.png"
-          />
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <meta name="viewport" content="prompt百宝箱"></meta>
         </Head>
         <body>
           <Main />
