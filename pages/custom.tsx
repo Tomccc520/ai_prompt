@@ -70,7 +70,7 @@ const CardPage: NextPage = () => {
 
     debugger
     let countRes = await reqCount(getIp())
-    countRes.json()
+    await countRes.json()
     .then(json => {
       if(countRes.ok && json.status != 200) {
         toast.error(json.message)
