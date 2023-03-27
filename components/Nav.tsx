@@ -234,9 +234,10 @@ const AddPromptButton = () => {
                             toast.error(data.message);
                             return
                           }
-                          router.push("/");
+                         
                           setShowModal(false);
                           toast.success("添加prompt成功");
+                          router.push("/promptsPark");
                         })
                         .catch(e => {
                           toast.error(e);

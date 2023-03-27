@@ -306,12 +306,6 @@ export function RegisterForm() {
           return
         }
         console.log(data)
-         // 判断注册是否成功，成功则调用登录api
-        setCookie("Cookie", JSON.stringify(user), {
-          path: "/",
-          maxAge: 3600 * 24, // cookeie 一小时后过期
-          sameSite: true,
-        });
         console.log(cookies);
         setShowModal(false);
         toast.success("注册成功！");
