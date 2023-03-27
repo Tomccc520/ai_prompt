@@ -4,8 +4,8 @@ import { saveUser } from "../../utils/store";
 
 
 const api = {
-    // baseURL: 'http://127.0.0.1:9500/tool',
-    baseURL: 'https://toolkit.show/tool',
+    baseURL: 'http://127.0.0.1:9500/tool',
+    // baseURL: 'https://toolkit.show/tool',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -17,7 +17,12 @@ const  form_headers = {
 
     export const registerUser = (data) => fetch(`${api.baseURL}/login/register`, { method: 'POST', body: JSON.stringify(data), headers: api.headers });
 
-    export const loginUser = (phoneNumbers,password) => fetch(`${api.baseURL}/login/login?phoneNumbers=${phoneNumbers}&password=${password}`, { method: 'POST', credentials: 'include'});
+    export const loginUser = (user) => fetch(`${api.baseURL}/login/login`, {
+       method: 'POST',
+       body: JSON.stringify(user),
+       credentials: 'include',
+       headers: api.headers
+      });
 
     export const smsCodeSender = (phoneNumbers) => fetch(`${api.baseURL}/login/smsCode?phoneNumbers=`+phoneNumbers, { method: 'POST' });
 

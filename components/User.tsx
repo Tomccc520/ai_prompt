@@ -32,11 +32,15 @@ export function LoginForm() {
       return;
     }
 
+    let user = {
+      "phoneNumbers":phoneNumber,
+      "password": password
+    }
 
     // console.log("username:"+username+"password:"+password)
     try {
       // 登录api
-      const response = await loginUser(phoneNumber,password)
+      const response = await loginUser(user)
       
       let headers = response.headers
       console.log(headers.get("cookie"))
