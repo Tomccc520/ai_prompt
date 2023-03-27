@@ -70,12 +70,15 @@ const CardPage: NextPage = () => {
 
     debugger
     let countRes = await reqCount(getIp())
-    if(!countRes.ok) {
-      toast.error("请登录，获取无限次数")
-      setLoading(false);
-      return
-    }
-
+    countRes.json()
+    .then(json => {
+      if(countRes.ok && json.status != 200) {
+        toast.error(json.message)
+        setLoading(false);
+        throw  new Error(json.message)
+      }
+    })
+    
     const response = useUserKey ?
       await fetch("/api/generate", {
         method: "POST",
