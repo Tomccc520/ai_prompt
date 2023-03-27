@@ -22,7 +22,7 @@ class MyDocument extends Document {
             name="twitter:description"
             content="Simplify your chat content in seconds."
           />
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+          <meta name="viewport" content="width=device-width" />
           <meta name="viewport" content="prompt百宝箱"></meta>
         </Head>
         <body>
