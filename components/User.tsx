@@ -94,7 +94,7 @@ export function LoginForm() {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm w-50 text-xs"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md my-4 mx-1 text-sm"
         onClick={() => setShowModal(true)}
       >
         登录
@@ -122,7 +122,7 @@ export function LoginForm() {
             >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-center flex-col">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                     <h3
                       className="text-2xl leading-6 font-bold text-black-900 flex justify-center items-center"
                       id="modal-headline"
@@ -158,8 +158,8 @@ export function LoginForm() {
                     </h3>
 
                     <div className="mt-5 sm:flex sm:items-center flex-col">
-                      <div className="w-full sm:max-w-xs mb-4">
-                        <label htmlFor="phoneNumber" className="sr-only">
+                      <div className="w-full sm:max-w-xs mb-4 flex-row">
+                        <label htmlFor="phoneNumber" className="text-left inline-block text-gray-700 text-sm font-bold mb-2">
                           手机号
                         </label>
                         <input
@@ -171,7 +171,7 @@ export function LoginForm() {
                         />
                       </div>
                       <div className=" w-full sm:max-w-xs mb-4">
-                        <label htmlFor="password" className="sr-only">
+                        <label htmlFor="password" className="text-left inline-block text-gray-700 text-sm font-bold mb-2">
                           密码
                         </label>
                         <input
@@ -185,7 +185,7 @@ export function LoginForm() {
 
                       <div className=" text-center mt-3 w-full sm:mt-0 sm:ml-3 sm:max-w-xs flex items-center">
                         <button
-                          className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
+                          className=" bg-black bg-opacity-80 hover:bg-opacity-100 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
                           onClick={(e) => {
                             console.log("Login button clicked");
                             handleLogin(e);
@@ -336,7 +336,7 @@ export function RegisterForm() {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md my-4 mx-1 text-sm"
         onClick={() => setShowModal(true)}
       >
         注册
@@ -449,7 +449,7 @@ export function RegisterForm() {
                             className={
                               isSending
                                 ? " w-24 h-10 rounded-md text-white bg-gray-400 cursor-not-allowed"
-                                : "w-24 h-10 rounded-md text-white bg-blue-500 hover:bg-blue-600"
+                                : "w-24 h-10 rounded-md text-white bg-black hover:bg-black"
                             }
                             onClick={handleSendCode}
                             disabled={isSending}
@@ -460,7 +460,7 @@ export function RegisterForm() {
                       </div>
                       <div className=" text-center mt-3 w-full sm:mt-0 sm:ml-3 sm:max-w-xs flex items-center">
                         <button
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-4 w-full"
+                          className="bg-black hover:bg-black text-white font-bold py-2 px-4 rounded-full m-4 w-full"
                           onClick={(e) => {
                             console.log("Register button clicked");
                             handleRegister(e);

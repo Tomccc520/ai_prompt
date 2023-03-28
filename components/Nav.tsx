@@ -7,10 +7,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { addPrompt, getPromptTypeList } from "../pages/api/backend";
 import { removeUser, retrieveUser } from "../utils/store";
 import { LoginForm, RegisterForm } from "./User";
+import { isMobile } from "../utils/toolUtil";
+import { isMobileOnly } from "react-device-detect";
 
 export default function Nav() {
   const [cookies, setCookie, removeCookie] = useCookies(["Cookie"]);
-
+  const [showAddPromptModal, setShowAddPromptModal] = useState(true);
   const [showLoginBtn, setshowLoginBtn] = useState(false);
   const [user, setUser] = useState({});
 
@@ -19,6 +21,10 @@ export default function Nav() {
     setshowLoginBtn(cookies.Cookie == null);
     let user = retrieveUser()
     setUser(user);
+
+    if(isMobileOnly) {
+      setShowAddPromptModal(false)
+    }
 
 
   }, [cookies]);
@@ -38,11 +44,12 @@ export default function Nav() {
         toastOptions={{ duration: 2000 }}
       />
       <div className="max-w-8xl mx-auto">
-        <div className="py-2 px-4">
+        <div className="py-2 px-2">
           <div className="relative flex h-10 items-center ">
-            <a className="font-semibold text-black" href="/">
+          {showAddPromptModal && <a className="font-semibold text-black" href="/">
               <img src="/logo.png" width="100" height="40" alt="icon " />
-            </a>
+            </a>}
+            
             <div className="ml-auto flex">
               <Link
                 href="/"
@@ -58,8 +65,9 @@ export default function Nav() {
               </Link>
             </div>
 
-            <div className="ml-auto flex">
-              <AddPromptButton />
+            <div className="ml-auto flex-row">
+            {showAddPromptModal && <AddPromptButton />}
+              
               {showLoginBtn && <LoginForm />}
               {showLoginBtn && <RegisterForm />}
               {!showLoginBtn && (
@@ -98,6 +106,7 @@ export default function Nav() {
 
 const AddPromptButton = () => {
   const [showModal, setShowModal] = useState(false);
+  
   const [cookies] = useCookies(["Cookie"]);
   const [formData, setFormData] = useState({});
   const [options, setOptions] = useState([]);
@@ -135,6 +144,8 @@ const AddPromptButton = () => {
     }
 
 
+
+
   },[])
 
 
@@ -143,11 +154,12 @@ const AddPromptButton = () => {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md m-0 text-sm "
         onClick={() => setShowModal(true)}
       >
         增加prompt
       </button>
+     
       {showModal ? (
         <div className="fixed z-10 inset-0 ">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 min-w-max">
@@ -275,7 +287,7 @@ const AddPromptButton = () => {
                           className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                           name="parentId"
                           id="parentId"
-                          defaultValue={options[0]["id"]}
+                          defaultValue={0}
                           onChange={handleFormChange}>
                             {options.map(option => (
                               <option key={option["id"]} value={option["id"]}>
