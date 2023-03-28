@@ -94,7 +94,7 @@ export function LoginForm() {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm"
+        className="bg-black text-white font-bold py-1 px-2 rounded-md m-4 text-sm w-50 text-xs"
         onClick={() => setShowModal(true)}
       >
         登录

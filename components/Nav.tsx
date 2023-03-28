@@ -39,7 +39,7 @@ export default function Nav() {
       />
       <div className="max-w-8xl mx-auto">
         <div className="py-2 px-4">
-          <div className="relative flex h-10 items-center">
+          <div className="relative flex h-10 items-center ">
             <a className="font-semibold text-black" href="/">
               <img src="/logo.png" width="100" height="40" alt="icon " />
             </a>
