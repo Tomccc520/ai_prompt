@@ -65,7 +65,7 @@ export default function Nav() {
               </Link>
             </div>
 
-            <div className="ml-auto flex-row">
+            <div className="ml-auto flex flex-row">
             {showAddPromptModal && <AddPromptButton />}
               
               {showLoginBtn && <LoginForm />}
@@ -154,7 +154,7 @@ const AddPromptButton = () => {
   return (
     <>
       <button
-        className="bg-black text-white font-bold py-1 px-2 rounded-md m-0 text-sm "
+        className="bg-black text-white font-bold py-1 px-2 my-4 rounded-md m-0 text-sm "
         onClick={() => setShowModal(true)}
       >
         增加prompt
