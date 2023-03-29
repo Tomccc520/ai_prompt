@@ -57,9 +57,9 @@ const ContactLink = () => {
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-2 w-3/5  sm:w-2/5 lg:w-300 h-auto flex flex-col items-center justify-center">
-          <h3 className="text-gray-700 text-sm text-center ">关注公众号【toolkit百宝箱】</h3>
+          <h3 className="text-gray-700 text-md text-center ">关注公众号【toolkit百宝箱】</h3>
             <Image src="/wx_qrcode.jpg" width={400} height={400} alt="popup image" className="object-contain m-0"/>
-            <p className="text-gray-700 text-sm text-center ">解锁更多prompt玩法!</p>
+            <h3 className="text-black font-bold text-md text-center ">免费领取chatgpt共享账号，解锁更多prompt玩法!</h3>
             <button className="bg-black text-white px-4 py-2 rounded-lg mt-4" onClick={() => setShowModal(false)}>关闭</button>
           </div>
         </div>
